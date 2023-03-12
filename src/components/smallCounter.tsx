@@ -2,60 +2,65 @@ import React, {ChangeEvent, useState} from 'react';
 import s from './App.module.css'
 import {Button} from "./Button";
 
+type UseStateType={
+    maxValue: number
+    startValue: number
+    counterValue: number
+}
 
 export const SmallCounter = () => {
 
-    const [value, setValue] = useState(0)
-    const [maxValue, setMaxValue] = useState(0)
-    const [startValue, setStartValue] = useState(0)
+    const [value, setValue] = useState<UseStateType>({
+        maxValue: 0,
+        startValue: 0,
+        counterValue: 0,
+    })
 
     const onIncHandler = () => {
-        setValue(value + 1)
-
+        setValue({...value, counterValue: value.counterValue + 1})
     }
 
     const onResetHandler = () => {
-        setValue(0)
+        setValue({...value, counterValue: value.startValue})
     }
+
     const setButtonHandler = () => {
-
-
+        setValue({...value, counterValue: value.startValue})
     }
-    const maxValueOnChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        const value = parseInt(e.currentTarget.value, 10);
-        setMaxValue(value);
-    }
-    const startValueOnChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        const value = parseInt(e.currentTarget.value,10)
-        setStartValue(value)
 
+    const maxValueonChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        const valueMax = parseInt(e.currentTarget.value, 10);
+        setValue({...value, maxValue: valueMax})
     }
+    const startValueonChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        const valueStart = parseInt(e.currentTarget.value, 10);
+        setValue({...value, startValue: valueStart})
+    }
+    const isDisabled = value.maxValue ===  value.counterValue
+
     return (
         <div className={s.app}>
-
-            <div className={s.container}>
+            <div className={s.conteiner}>
                 <div className={s.indecator}>
-                    <span className={s.input}>max value <input onChange={maxValueOnChangeHandler}
-                                                               type={"number"}/></span>
-                    <div className={s.input}>start value <input onChange={startValueOnChangeHandler} type={"number"}/>
+                    <span className={s.input} > max value <input
+                        onChange={maxValueonChangeHandler}
+                        value={value.maxValue}
+                        type="number"/> </span>
+                    <div className={s.input} >start value <input value={value.startValue}
+                                                                 onChange={startValueonChangeHandler}
+                                                                 type="number"/>
                     </div>
-                    <Button name={"set"} callback={() => {
-                        setButtonHandler()
-                    }}/>
+                    <Button name={"set"} callback={setButtonHandler}/>
                 </div>
-
             </div>
-            <div className={s.container}>
 
-                <div className={s.indecator + (value >= 5 ? " " + s.red : "")}>
-                    <div className={s.input}> {value}</div>
+            <div className={s.container}>
+                <div className={s.indecator + (isDisabled ? " " + s.red : "")}>
+                    <div className={s.input}> {value.counterValue}</div>
                     <div>
-                        <Button name={'inc'} callback={() => {
-                            onIncHandler()
-                        }} disabled={value >= 5}/>
-                        <Button name={'reset'} callback={() => {
-                            onResetHandler()
-                        }}/>
+
+                        <Button name={'inc'} callback={onIncHandler} disabled={isDisabled}/>
+                        <Button name={'reset'} callback={onResetHandler}/>
 
                     </div>
                 </div>
@@ -65,4 +70,3 @@ export const SmallCounter = () => {
         </div>
     );
 }
-
