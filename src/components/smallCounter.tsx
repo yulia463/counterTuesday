@@ -6,18 +6,21 @@ type UseStateType={
     maxValue: number
     startValue: number
     counterValue: number
+
 }
 
 export const SmallCounter = () => {
 
     const [value, setValue] = useState<UseStateType>({
-        maxValue: 0,
-        startValue: 0,
-        counterValue: 0,
+        maxValue: Number(localStorage.getItem('maxValue')),
+        startValue:  Number(localStorage.getItem('startValue')),
+        counterValue: Number(localStorage.getItem('counterValue')),
+
     })
 
     const onIncHandler = () => {
         setValue({...value, counterValue: value.counterValue + 1})
+        localStorage.setItem('counterValue',String(value.counterValue + 1))
     }
 
     const onResetHandler = () => {
@@ -26,17 +29,23 @@ export const SmallCounter = () => {
 
     const setButtonHandler = () => {
         setValue({...value, counterValue: value.startValue})
+        localStorage.setItem('counterValue',String(value.startValue))
     }
 
     const maxValueonChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         const valueMax = parseInt(e.currentTarget.value, 10);
         setValue({...value, maxValue: valueMax})
+        localStorage.setItem('maxValue', e.currentTarget.value)
+
     }
     const startValueonChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         const valueStart = parseInt(e.currentTarget.value, 10);
         setValue({...value, startValue: valueStart})
+        localStorage.setItem('startValue', e.currentTarget.value)
     }
     const isDisabled = value.maxValue ===  value.counterValue
+
+
 
     return (
         <div className={s.app}>
