@@ -1,8 +1,12 @@
 import React, {ChangeEvent, useState} from 'react';
 import s from './App.module.css'
 import {Button} from "./Button";
+import {useDispatch, useSelector} from "react-redux";
 
-type UseStateType={
+import {useAppSelector} from "../hooks/hooks";
+import {IncrementAC, maxValueAC, resetAC, setButtonAC, startValueAC} from "./localStorage/reducer/reducer";
+
+type UseStateType = {
     maxValue: number
     startValue: number
     counterValue: number
@@ -11,53 +15,58 @@ type UseStateType={
 
 export const SmallCounter = () => {
 
-    const [value, setValue] = useState<UseStateType>({
-        maxValue: Number(localStorage.getItem('maxValue')),
-        startValue:  Number(localStorage.getItem('startValue')),
-        counterValue: Number(localStorage.getItem('counterValue')),
+    // const [value, setValue] = useState<UseStateType>({
+    //     maxValue: Number(localStorage.getItem('maxValue')),
+    //     startValue: Number(localStorage.getItem('startValue')),
+    //     counterValue: Number(localStorage.getItem('counterValue')),
+    //
+    // })
 
-    })
+    const value1 = useAppSelector(state => state)
+    const dispatch = useDispatch()
+    console.log('value:', value1)
 
     const onIncHandler = () => {
-        setValue({...value, counterValue: value.counterValue + 1})
-        localStorage.setItem('counterValue',String(value.counterValue + 1))
+        dispatch(IncrementAC())
     }
 
     const onResetHandler = () => {
-        setValue({...value, counterValue: value.startValue})
+        // setValue({...value, counterValue: value.startValue})
+        dispatch(resetAC())
     }
 
     const setButtonHandler = () => {
-        setValue({...value, counterValue: value.startValue})
-        localStorage.setItem('counterValue',String(value.startValue))
+        //  setValue({...value, counterValue: value.startValue})
+        //  localStorage.setItem('counterValue',String(value.startValue))
+        dispatch(setButtonAC())
     }
 
     const maxValueonChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         const valueMax = parseInt(e.currentTarget.value, 10);
-        setValue({...value, maxValue: valueMax})
-        localStorage.setItem('maxValue', e.currentTarget.value)
-
+        //  setValue({...value, maxValue: valueMax})
+        // localStorage.setItem('maxValue', e.currentTarget.value)
+        dispatch(maxValueAC(valueMax))
     }
     const startValueonChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         const valueStart = parseInt(e.currentTarget.value, 10);
-        setValue({...value, startValue: valueStart})
-        localStorage.setItem('startValue', e.currentTarget.value)
+        //  setValue({...value, startValue: valueStart})
+        // localStorage.setItem('startValue', e.currentTarget.value)
+        dispatch(startValueAC(valueStart))
     }
-    const isDisabled = value.maxValue ===  value.counterValue
-
+    const isDisabled = value1.counter.maxValue === value1.counter.counterValue
 
 
     return (
         <div className={s.app}>
             <div className={s.conteiner}>
                 <div className={s.indecator}>
-                    <span className={s.input} > max value <input
+                    <span className={s.input}> max value <input
                         onChange={maxValueonChangeHandler}
-                        value={value.maxValue}
+                        value={value1.counter.maxValue}
                         type="number"/> </span>
-                    <div className={s.input} >start value <input value={value.startValue}
-                                                                 onChange={startValueonChangeHandler}
-                                                                 type="number"/>
+                    <div className={s.input}>start value <input value={value1.counter.startValue}
+                                                                onChange={startValueonChangeHandler}
+                                                                type="number"/>
                     </div>
                     <Button name={"set"} callback={setButtonHandler}/>
                 </div>
@@ -65,7 +74,7 @@ export const SmallCounter = () => {
 
             <div className={s.container}>
                 <div className={s.indecator + (isDisabled ? " " + s.red : "")}>
-                    <div className={s.input}> {value.counterValue}</div>
+                    <div className={s.input}> {value1.counter.counterValue}</div>
                     <div>
 
                         <Button name={'inc'} callback={onIncHandler} disabled={isDisabled}/>
