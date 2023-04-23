@@ -1,5 +1,3 @@
-
-
 export interface AppState {
     maxValue: number;
     startValue: number;
@@ -74,18 +72,18 @@ export const setButtonAC = () => {
         type: "SET_COUNTER",
     } as const
 }
-export const maxValueAC = (valueMax:number) => {
+export const maxValueAC = (valueMax: number) => {
     return {
         type: "SET_MAX_VALUE",
-        payload:{
+        payload: {
             valueMax
         }
     } as const
 }
-export const startValueAC = (valueStart:number) => {
+export const startValueAC = (valueStart: number) => {
     return {
         type: "SET_START_VALUE",
-        payload:{
+        payload: {
             valueStart
         }
     } as const
