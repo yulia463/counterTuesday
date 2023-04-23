@@ -1,7 +1,7 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {ChangeEvent} from 'react';
 import s from './App.module.css'
 import {Button} from "./Button";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 
 import {useAppSelector} from "../hooks/hooks";
 import {IncrementAC, maxValueAC, resetAC, setButtonAC, startValueAC} from "./localStorage/reducer/reducer";
