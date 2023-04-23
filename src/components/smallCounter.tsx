@@ -6,12 +6,12 @@ import {useDispatch} from "react-redux";
 import {useAppSelector} from "../hooks/hooks";
 import {IncrementAC, maxValueAC, resetAC, setButtonAC, startValueAC} from "./localStorage/reducer/reducer";
 
-type UseStateType = {
-    maxValue: number
-    startValue: number
-    counterValue: number
-
-}
+// type UseStateType = {
+//     maxValue: number
+//     startValue: number
+//     counterValue: number
+//
+// }
 
 export const SmallCounter = () => {
 
